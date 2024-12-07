@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diabetes Prediction</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body,
+      html {
+        font-family: "Nunito", sans-serif;
+        height: 100%;
+        margin: 0;
+        background: #f8fdfc;
+        animation: fadeInPage 0.5s forwards;
+      }
+      /* Page fade-in animation */
+      @keyframes fadeInPage {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Navbar */
+      .navbar {
+        background: #4caf93;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        animation: fadeInNavbar 0.6s ease-out forwards;
+      }
+
+      /* Navbar fade-in */
+      @keyframes fadeInNavbar {
+        from {
+          opacity: 0;
+          transform: translateY(-60px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .navbar-brand,
+      .nav-link {
+        color: #ffffff !important;
+        font-weight: 600;
+      }
+
+      .nav-link:hover {
+        color: #a9f0d1 !important;
+      }
+
+      .navbar-collapse {
+        justify-content: flex-end;
+      }
+      /* Footer */
+      .footer {
+        background: #4caf93;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+        margin-top: auto;
+        opacity: 0;
+        animation: fadeInFooter 0.6s ease-out forwards 0.6s;
+      }
+
+      /* Footer fade-in animation */
+      @keyframes fadeInFooter {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .footer a {
+        color: #a9f0d1;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer a:hover {
+        color: #ffffff;
+      }
+
+      /* Form Container */
+      .form-container {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        margin-top: 20px;
+        animation: fadeIn 1s ease-out; /* Added fade-in animation */
+      }
+
+      .form-label {
+        font-weight: 600;
+        color: #4caf93;
+      }
+
+      .form-control {
+        border-radius: 10px;
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+
+      .btn-primary {
+        background: #4caf93;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        padding: 12px;
+        transition: all 0.3s ease;
+        animation: buttonAnimation 0.5s ease-out; /* Added animation for button */
+      }
+
+      .btn-primary:hover {
+        background: #3b9c7f;
+      }
+
+      /* Result Section */
+      .result-section {
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        animation: fadeIn 1.5s ease-out; /* Fade-in for result section */
+      }
+
+      .result-title {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #4caf93;
+        margin-bottom: 20px;
+      }
+
+      .result-message {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 30px;
+        color: #666;
+      }
+
+      .result-status {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 50px;
+        background: #ff5722;
+      }
+
+      .result-status.positive {
+        background: #4caf50;
+      }
+
+      .result-status.negative {
+        background: #ff5722;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes buttonAnimation {
+        0% {
+          transform: scale(0.8);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* Responsive Layout */
+      @media (max-width: 768px) {
+        .result-section {
+          margin-top: 30px;
+        }
+      }
+
+      .form-container h2 {
+        margin-bottom: 30px;
+      }
+
+      .form-control {
+        margin-bottom: 15px;
+      }
+
+      .result-section {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/polls/home"
+          ><i class="fas fa-heartbeat"></i> Diabetes Classifier</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/polls/predict">Predict</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="/polls/logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/polls/login">Login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-6 col-12">
+          <!-- Form Section -->
+          <div class="form-container">
+            <h2 class="text-center mb-4">Enter Data for Diabetes Prediction</h2>
+            <form method="post" action="/polls/predict/">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="pregnancies" class="form-label">Pregnancies</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="pregnancies"
+                  name="pregnancies"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="glucose" class="form-label">Glucose</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="glucose"
+                  name="glucose"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="bloodPressure" class="form-label"
+                  >Blood Pressure</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="bloodPressure"
+                  name="bloodPressure"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="skinthickness" class="form-label"
+                  >Skin Thickness</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="skinthickness"
+                  name="skinthickness"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="insulin" class="form-label">Insulin</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="insulin"
+                  name="insulin"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="bmi" class="form-label">BMI</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="bmi"
+                  name="bmi"
+                  step="any"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="diabetespedigreefunction" class="form-label"
+                  >Diabetes Pedigree Function</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="diabetespedigreefunction"
+                  name="diabetespedigreefunction"
+                  step="any"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="age" class="form-label">Age</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="age"
+                  name="age"
+                  required
+                />
+              </div>
+              <div class="text-center">
+                <button class="btn btn-primary w-100" type="submit">
+                  <i class="fas fa-rocket"></i> Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Result Section -->
+        <div class="col-lg-5 col-md-6 col-12 mt-4 mt-md-0">
+          <div id="predictionResult" class="result-section">
+            <h3 class="result-title">Prediction Result</h3>
+
+            <!-- Menampilkan hasil prediksi jika data ada -->
+            {% if data %}
+            <p class="result-message">
+              Based on the data provided, the prediction is:
+            </p>
+            <div class="result-status">{{ data }}</div>
+            {% else %}
+            <p class="result-message">
+              No prediction data available. Please provide the necessary inputs.
+            </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2024 Diabetes Classifier | Made with ❤ for better health.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
